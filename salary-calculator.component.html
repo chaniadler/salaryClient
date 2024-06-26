@@ -1,0 +1,113 @@
+<div class="container">
+    <h2>מחשבון העלאת שכר</h2>
+
+    <form (ngSubmit)="calculateSalary()" #salaryForm="ngForm" class="salary-form container">
+        <div class="form-group">
+            <label>חלקיות המשרה:</label>
+            <select class="form-control" name="employmentFraction" [(ngModel)]="formData.employmentFraction" required>
+                <option value="100">100%</option>
+                <option value="75">75%</option>
+                <option value="50">50%</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>רמה מקצועית:</label>
+            <select class="form-control" name="professionalLevel" [(ngModel)]="formData.professionalLevel" required>
+                <option [value]="ProfessionalLevel.Beginner">מתחיל</option>
+                <option [value]="ProfessionalLevel.Experienced">מנוסה</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>רמה ניהולית:</label>
+            <select class="form-control" name="managementLevel" [(ngModel)]="formData.managementLevel" required>
+                <option [value]="ManagementLevel.None">ללא</option>
+                <option [value]="ManagementLevel.Level1">רמת ניהול 1</option>
+                <option [value]="ManagementLevel.Level2">רמת ניהול 2</option>
+                <option [value]="ManagementLevel.Level3">רמת ניהול 3</option>
+                <option [value]="ManagementLevel.Level4">רמת ניהול 4</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>סה"כ שנות וותק:</label>
+            <input type="number" class="form-control" name="yearsOfExperience" [(ngModel)]="formData.yearsOfExperience" required>
+        </div>
+
+        <div class="form-group">
+            <label>האם זכאי לתוספת עבודה בחוק?</label>
+            <select class="form-control" name="eligibleForLawAddition" [(ngModel)]="formData.eligibleForLawAddition" required>
+                <option value="yes">כן</option>
+                <option value="no">לא</option>
+            </select>
+        </div>
+
+        <div *ngIf="formData.eligibleForLawAddition === 'yes'" class="form-group">
+            <label>שייכות לקבוצה:</label>
+            <select class="form-control" name="groupMembership" [(ngModel)]="formData.groupMembership" required>
+                <option value="groupA">קבוצה א'</option>
+                <option value="groupB">קבוצה ב'</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">חשב את השכר שלי</button>
+    </form>
+
+    <div *ngIf="showResults" class="results">
+        <h3>תוצאות החישוב:</h3>
+        <table>
+            <tbody>
+              
+                <tr>
+                    <td>שכר יסוד לפי חלקיות משרה</td>
+                    <td>{{ calculatedSalary.baseSalary }}</td>
+                </tr>
+                <tr>
+                    <td>חלקיות משרה</td>
+                    <td>{{ formData.employmentFraction }}%</td>
+                </tr>
+                <tr>
+                    <td>רמה מקצועית</td>
+                    <td>{{ ProfessionalLevel[formData.professionalLevel] }}</td>
+                </tr>
+                <tr>
+                    <td>רמה ניהולית</td>
+                    <td>{{ ManagementLevel[formData.managementLevel] }}</td>
+                </tr>
+                <tr>
+                    <td>סה"כ שנות וותק</td>
+                    <td>{{ formData.yearsOfExperience }}</td>
+                </tr>
+                <tr>
+                    <td>שיעור תוספת וותק באחוזים</td>
+                    <td>{{ calculatedSalary.totalSeniorityBonusPercentage }}%</td>
+                </tr>
+                <tr>
+                    <td>סה"כ תוספת וותק לשכר</td>
+                    <td>{{ calculatedSalary.totalSeniorityBonusAmount }}</td>
+                </tr>
+                <tr>
+                    <td>סה"כ תוספת עבודה מתוקף מינוי בחוק</td>
+                    <td>{{ calculatedSalary.totalLawBonus }}</td>
+                </tr>
+                <tr>
+                    <td>סה"כ שכר בסיס לפני העלאה</td>
+                    <td>{{ calculatedSalary.salaryBeforeIncrease }}</td>
+                </tr>
+                <tr>
+                    <td>שיעור העלאת שכר באחוזים</td>
+                    <td>{{ calculatedSalary.salaryIncreasePercentage }}%</td>
+                </tr>
+                <tr>
+                    <td>סה"כ תוספת העלאת שכר</td>
+                    <td>{{ calculatedSalary.totalSalaryIncrease }}</td>
+                </tr>
+                <tr>
+                    <td>סה"כ שכר בסיס לאחר העלאה</td>
+                    <td>{{ calculatedSalary.finalSalary }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
